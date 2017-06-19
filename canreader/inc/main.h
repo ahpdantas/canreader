@@ -89,6 +89,11 @@
 #define CANx_RX_IRQn                   CEC_CAN_IRQn
 #define CANx_RX_IRQHandler             CEC_CAN_IRQHandler
 
+/* Size of Trasmission buffer */
+#define CAN_TX_MESSAGE_BUFFERSIZE                      10
+/* Size of Reception buffer */
+#define CAN_RX_MESSAGE_BUFFERSIZE                      10
+
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 

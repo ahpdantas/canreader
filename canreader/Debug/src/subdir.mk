@@ -4,21 +4,27 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../src/CanRxMsgQueue.c \
 ../src/main.c \
+../src/protocol.c \
 ../src/stm32f0xx_hal_msp.c \
 ../src/stm32f0xx_it.c \
 ../src/syscalls.c \
 ../src/system_stm32f0xx.c 
 
 OBJS += \
+./src/CanRxMsgQueue.o \
 ./src/main.o \
+./src/protocol.o \
 ./src/stm32f0xx_hal_msp.o \
 ./src/stm32f0xx_it.o \
 ./src/syscalls.o \
 ./src/system_stm32f0xx.o 
 
 C_DEPS += \
+./src/CanRxMsgQueue.d \
 ./src/main.d \
+./src/protocol.d \
 ./src/stm32f0xx_hal_msp.d \
 ./src/stm32f0xx_it.d \
 ./src/syscalls.d \

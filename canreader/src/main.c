@@ -39,15 +39,39 @@
 #include <stdio.h>
 #include <string.h>
 #include "main.h"
-
+#include "protocol.h"
+#include "CanRxMsgQueue.h"
 /* Private typedef -----------------------------------------------------------*/
+typedef enum {
+	INIT_FIFO_QUEUES,
+	SAVE_CAN_BUS_DATA_FIFO_0,
+	SAVE_CAN_BUS_DATA_FIFO_1,
+	WAIT_FREE_FIFO
+}saveStates_t;
+
+typedef enum {
+	NO_DATA_TO_SEND,
+	SEND_CAN_BUS_DATA_FIFO_0,
+	SEND_CAN_BUS_DATA_FIFO_1
+}sendStates_t;
+
 /* Private define ------------------------------------------------------------*/
+#define CAN_RX_MSG_QUEUE_SIZE 10
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+/* Machine State of the application */
+saveStates_t saveState = INIT_FIFO_QUEUES;
+sendStates_t sendState = NO_DATA_TO_SEND;
 /* UART handler declaration */
 UART_HandleTypeDef UartHandle;
 /* CAN handler declaration */
 CAN_HandleTypeDef CanHandle;
+/* CAN Messages */
+CanTxMsgTypeDef        CAN_TxMessage;
+CanRxMsgTypeDef        CAN_RxMessage;
+/* CAN RX FIFO Queues */
+Queue RxFIFO0;
+Queue RxFIFO1;
 
 /* Welcome Message */
 int8_t WelcomeMessage[] = "Trixlog CanReader Application\n";
@@ -135,7 +159,7 @@ void UART_Config(void)
 	      - Hardware flow control disabled (RTS and CTS signals) */
 	  UartHandle.Instance        = USARTx;
 
-	  UartHandle.Init.BaudRate     = 9600;
+	  UartHandle.Init.BaudRate     = 115200;
 	  UartHandle.Init.WordLength   = UART_WORDLENGTH_8B;
 	  UartHandle.Init.StopBits     = UART_STOPBITS_1;
 	  UartHandle.Init.Parity       = UART_PARITY_NONE;
@@ -154,13 +178,12 @@ void UART_Config(void)
 static void CAN_Config(void)
 {
   CAN_FilterConfTypeDef  sFilterConfig;
-  static CanTxMsgTypeDef        TxMessage;
-  static CanRxMsgTypeDef        RxMessage;
+  uint32_t CAN_ErrorCode = 0;
 
   /*##-1- Configure the CAN peripheral #######################################*/
   CanHandle.Instance = CANx;
-  CanHandle.pTxMsg = &TxMessage;
-  CanHandle.pRxMsg = &RxMessage;
+  CanHandle.pTxMsg = &CAN_TxMessage;
+  CanHandle.pRxMsg = &CAN_RxMessage;
 
   CanHandle.Init.TTCM = DISABLE;
   CanHandle.Init.ABOM = DISABLE;
@@ -168,7 +191,7 @@ static void CAN_Config(void)
   CanHandle.Init.NART = DISABLE;
   CanHandle.Init.RFLM = DISABLE;
   CanHandle.Init.TXFP = DISABLE;
-  CanHandle.Init.Mode = CAN_MODE_NORMAL;
+  CanHandle.Init.Mode = CAN_MODE_LOOPBACK;
   CanHandle.Init.SJW = CAN_SJW_1TQ;
   CanHandle.Init.BS1 = CAN_BS1_5TQ;
   CanHandle.Init.BS2 = CAN_BS2_6TQ;
@@ -211,8 +234,111 @@ static void CAN_Config(void)
   * @param  None
   * @retval None
   */
+void SaveCanBusDataHandler(void)
+{
+	switch(saveState)
+	{
+	case INIT_FIFO_QUEUES:
+		RxFIFO0 = CreateQueue(CAN_RX_MSG_QUEUE_SIZE);
+		RxFIFO1 = CreateQueue(CAN_RX_MSG_QUEUE_SIZE);
+		saveState = SAVE_CAN_BUS_DATA_FIFO_0;
+		break;
+	case SAVE_CAN_BUS_DATA_FIFO_0:
+		if( HAL_CAN_Receive(&CanHandle, CAN_FIFO0,1) == HAL_OK )
+		{
+			if( enQueue(RxFIFO0, CanHandle.pRxMsg ) == -1 ){
+				if( isEmpty(RxFIFO1) )
+				{
+					saveState = SAVE_CAN_BUS_DATA_FIFO_1;
+				}
+				else{
+					saveState = WAIT_FREE_FIFO;
+				}
+			}
+		}
+		break;
+	case SAVE_CAN_BUS_DATA_FIFO_1:
+		if( HAL_CAN_Receive(&CanHandle, CAN_FIFO0,1) == HAL_OK )
+		{
+			if( enQueue(RxFIFO1, CanHandle.pRxMsg ) == -1 ){
+				if( isEmpty(RxFIFO0) )
+				{
+					saveState = SAVE_CAN_BUS_DATA_FIFO_1;
+				}
+				else{
+					saveState = WAIT_FREE_FIFO;
+				}
+			}
+		}
+		break;
+	case WAIT_FREE_FIFO:
+		if( isEmpty(RxFIFO0) )
+		{
+			saveState = SAVE_CAN_BUS_DATA_FIFO_0;
+		} else if( isEmpty(RxFIFO1))
+		{
+			saveState = SAVE_CAN_BUS_DATA_FIFO_1;
+		}
+		break;
+	}
+}
+
+/**
+  * @brief  Main program
+  * @param  None
+  * @retval None
+  */
+void SendCanBusDataHandler(void)
+{
+	CanRxMsgTypeDef RxMsg;
+
+	switch(sendState)
+	{
+	case NO_DATA_TO_SEND:
+		if( isFull(RxFIFO0) )
+		{
+			sendState = SEND_CAN_BUS_DATA_FIFO_0;
+		} else if( isFull(RxFIFO1))
+		{
+			sendState = SEND_CAN_BUS_DATA_FIFO_1;
+		}
+		break;
+	case SEND_CAN_BUS_DATA_FIFO_0:
+		if( !isEmpty(RxFIFO0) )
+		{
+			if( deQueue(RxFIFO0, &RxMsg) == 0 )
+			{
+				SendMessage(&RxMsg);
+			}
+
+		} else {
+			sendState = NO_DATA_TO_SEND;
+		}
+
+		break;
+	case SEND_CAN_BUS_DATA_FIFO_1:
+		if( !isEmpty(RxFIFO1) )
+		{
+			if( deQueue(RxFIFO1, &RxMsg) == 0 )
+			{
+				SendMessage(&RxMsg);
+			}
+		} else {
+			sendState = NO_DATA_TO_SEND;
+		}
+
+		break;
+	}
+}
+
+/**
+  * @brief  Main program
+  * @param  None
+  * @retval None
+  */
 int main(void)
 {
+
 	HAL_Init();
 
 	/* Configure the system clock to 48 MHz */
@@ -227,10 +353,13 @@ int main(void)
 	HAL_UART_Transmit(&UartHandle, (uint8_t*)WelcomeMessage, strlen(WelcomeMessage), 5000);
 
 	while(1){
+		SaveCanBusDataHandler();
+		SendCanBusDataHandler();
 		BSP_LED_On(LED3);
 		HAL_Delay(1000);
 		BSP_LED_Off(LED3);
 		HAL_Delay(1000);
 	}
-
 }
+
+

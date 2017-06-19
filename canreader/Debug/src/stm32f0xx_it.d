@@ -1,4 +1,5 @@
 src/stm32f0xx_it.o: ../src/stm32f0xx_it.c \
+ C:/Users/andre/Documents/trixlog/canreader/inc/main.h \
  C:/Users/andre/Documents/trixlog/canreader/HAL_Driver/Inc/stm32f0xx_hal.h \
  C:/Users/andre/Documents/trixlog/canreader/HAL_Driver/Inc/stm32f0xx_hal_conf.h \
  C:/Users/andre/Documents/trixlog/canreader/HAL_Driver/Inc/stm32f0xx_hal_rcc.h \
@@ -51,7 +52,10 @@ src/stm32f0xx_it.o: ../src/stm32f0xx_it.c \
  C:/Users/andre/Documents/trixlog/canreader/HAL_Driver/Inc/stm32f0xx_hal_usart.h \
  C:/Users/andre/Documents/trixlog/canreader/HAL_Driver/Inc/stm32f0xx_hal_usart_ex.h \
  C:/Users/andre/Documents/trixlog/canreader/HAL_Driver/Inc/stm32f0xx_hal_wwdg.h \
+ C:/Users/andre/Documents/trixlog/canreader/Utilities/STM32F0xx_Nucleo_32/stm32f0xx_nucleo_32.h \
  C:/Users/andre/Documents/trixlog/canreader/inc/stm32f0xx_it.h
+
+C:/Users/andre/Documents/trixlog/canreader/inc/main.h:
 
 C:/Users/andre/Documents/trixlog/canreader/HAL_Driver/Inc/stm32f0xx_hal.h:
 
@@ -156,5 +160,7 @@ C:/Users/andre/Documents/trixlog/canreader/HAL_Driver/Inc/stm32f0xx_hal_usart.h:
 C:/Users/andre/Documents/trixlog/canreader/HAL_Driver/Inc/stm32f0xx_hal_usart_ex.h:
 
 C:/Users/andre/Documents/trixlog/canreader/HAL_Driver/Inc/stm32f0xx_hal_wwdg.h:
+
+C:/Users/andre/Documents/trixlog/canreader/Utilities/STM32F0xx_Nucleo_32/stm32f0xx_nucleo_32.h:
 
 C:/Users/andre/Documents/trixlog/canreader/inc/stm32f0xx_it.h:

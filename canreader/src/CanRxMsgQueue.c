@@ -57,7 +57,7 @@ int8_t enQueue(Queue q, CanRxMsgTypeDef* msg )
 
 	q->end->next = malloc(sizeof(struct cell_def));
 	q->end = q->end->next;
-	memccpy(&q->end->msg, msg, sizeof(CanRxMsgTypeDef));
+	memcpy(&q->end->msg, msg, sizeof(CanRxMsgTypeDef));
 	q->end->next = NULL;
 	q->size = q->size + 1;
 }

@@ -78,10 +78,10 @@
 #define CANx_RELEASE_RESET()            __HAL_RCC_CAN1_RELEASE_RESET()
 
 /* Definition for USARTx Pins */
-#define CANx_TX_PIN                    GPIO_PIN_9
+#define CANx_TX_PIN                    GPIO_PIN_12
 #define CANx_TX_GPIO_PORT              GPIOA
 #define CANx_TX_AF                     GPIO_AF4_CAN
-#define CANx_RX_PIN                    GPIO_PIN_10
+#define CANx_RX_PIN                    GPIO_PIN_11
 #define CANx_RX_GPIO_PORT              GPIOA
 #define CANx_RX_AF                     GPIO_AF4_CAN
 

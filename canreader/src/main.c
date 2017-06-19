@@ -226,7 +226,6 @@ static void CAN_Config(void)
   CanHandle.pTxMsg->ExtId = 0x01;
   CanHandle.pTxMsg->RTR = CAN_RTR_DATA;
   CanHandle.pTxMsg->IDE = CAN_ID_STD;
-  CanHandle.pTxMsg->DLC = 2;
 }
 
 /**
@@ -331,6 +330,29 @@ void SendCanBusDataHandler(void)
 	}
 }
 
+void SendCanBusDummyData()
+{
+	static uint8_t strToSend = 0;
+	uint8_t HelloStr[] = "Hellooo";
+	uint8_t TrixlogStr[] = "Trixlog";
+	if( strToSend == 0 )
+	{
+		CanHandle.pTxMsg->DLC = strlen(HelloStr);
+		memcpy(CanHandle.pTxMsg->Data, HelloStr, CanHandle.pTxMsg->DLC);
+	}
+	else{
+		CanHandle.pTxMsg->DLC =  strlen(TrixlogStr);
+		memcpy(CanHandle.pTxMsg->Data, TrixlogStr, CanHandle.pTxMsg->DLC);
+	}
+
+	strToSend^=1;
+
+	if(HAL_CAN_Transmit(&CanHandle,1000) != HAL_OK)
+	{
+		Error_Handler();
+	}
+}
+
 /**
   * @brief  Main program
   * @param  None
@@ -353,12 +375,11 @@ int main(void)
 	HAL_UART_Transmit(&UartHandle, (uint8_t*)WelcomeMessage, strlen(WelcomeMessage), 5000);
 
 	while(1){
+		SendCanBusDummyData();
 		SaveCanBusDataHandler();
 		SendCanBusDataHandler();
-		BSP_LED_On(LED3);
-		HAL_Delay(1000);
-		BSP_LED_Off(LED3);
-		HAL_Delay(1000);
+		BSP_LED_Toggle(LED3);
+		HAL_Delay(500);
 	}
 }
 

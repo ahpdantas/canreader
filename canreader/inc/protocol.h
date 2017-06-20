@@ -22,7 +22,6 @@ typedef struct {
 	uint16_t seq;
 	uint8_t type;
 	uint8_t subType;
-	uint8_t data;
 	uint8_t checksum;
 }message_t;
 /* Exported macro ------------------------------------------------------------*/

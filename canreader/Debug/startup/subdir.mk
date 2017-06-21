@@ -15,7 +15,7 @@ startup/%.o: ../startup/%.s
 	@echo 'Building file: $<'
 	@echo 'Invoking: MCU GCC Assembler'
 	@echo $(PWD)
-	arm-none-eabi-as -mcpu=cortex-m0 -mthumb -mfloat-abi=soft -I"C:/Users/andre/Documents/trixlog/canreader/inc" -I"C:/Users/andre/Documents/trixlog/canreader/CMSIS/core" -I"C:/Users/andre/Documents/trixlog/canreader/CMSIS/device" -I"C:/Users/andre/Documents/trixlog/canreader/HAL_Driver/Inc/Legacy" -I"C:/Users/andre/Documents/trixlog/canreader/HAL_Driver/Inc" -I"C:/Users/andre/Documents/trixlog/canreader/Utilities/STM32F0xx_Nucleo_32" -g -o "$@" "$<"
+	arm-none-eabi-as -mcpu=cortex-m0 -mthumb -mfloat-abi=soft -g -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

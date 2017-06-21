@@ -9,9 +9,9 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include startup/subdir.mk
--include src/subdir.mk
 -include Utilities/STM32F0xx_Nucleo_32/subdir.mk
--include HAL_Driver/Src/subdir.mk
+-include Src/subdir.mk
+-include Drivers/STM32F0xx_HAL_Driver/Src/subdir.mk
 -include subdir.mk
 -include objects.mk
 
@@ -32,10 +32,10 @@ endif
 all: canreader.elf
 
 # Tool invocations
-canreader.elf: $(OBJS) $(USER_OBJS) C:\Users\andre\Documents\trixlog\canreader\LinkerScript.ld
+canreader.elf: $(OBJS) $(USER_OBJS) ../STM32F042K6Tx_FLASH.ld
 	@echo 'Building target: $@'
 	@echo 'Invoking: MCU GCC Linker'
-	arm-none-eabi-gcc -mcpu=cortex-m0 -mthumb -mfloat-abi=soft -T"C:\Users\andre\Documents\trixlog\canreader\LinkerScript.ld" -Wl,-Map=output.map -Wl,--gc-sections -o "canreader.elf" @"objects.list" $(USER_OBJS) $(LIBS) -lm
+	arm-none-eabi-gcc -mcpu=cortex-m0 -mthumb -mfloat-abi=soft -specs=nosys.specs -specs=nano.specs -T"../STM32F042K6Tx_FLASH.ld" -Wl,-Map=output.map -Wl,--gc-sections -o "canreader.elf" @"objects.list" $(USER_OBJS) $(LIBS) -lm
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build

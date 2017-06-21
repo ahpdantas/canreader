@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file   protocol.c
   * @author André Dantas
-  * @brief	Implementation of the trixlog protocol
+  * @brief	Implementation of the trixlog protocol defined in ../../docs/protocolo_trixlog.pdf
   *
  ******************************************************************************/
 /* Includes ------------------------------------------------------------------*/
@@ -24,18 +24,33 @@ uint8_t TrixlogProtocolBuffer[TRIXLOG_PROTOCOL_BUFFER_SIZE];
 uint8_t TrixlogProtocolMessageSize = 0;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
+
+/**
+* @brief  Add the start byte to the buffer
+* @retval None
+*/
 void AddStartByte()
 {
 	TrixlogProtocolBuffer[0] = 0x01;
 	TrixlogProtocolMessageSize++;
 }
 
+/**
+* @brief  Add the end byte to the buffer
+* @retval None
+*/
 void AddEndByte()
 {
 	TrixlogProtocolBuffer[TrixlogProtocolMessageSize] = 0x04;
 	TrixlogProtocolMessageSize++;
 }
 
+/**
+* @brief  Add a field to the serial buffer and escape special characters
+* @param[in] field 			field pointer
+* @param[in] fieldSize 	Size of the field
+* @retval None
+*/
 void AddFieldToBuffer(uint8_t* field, uint8_t fieldSize)//, uint8_t* buffer, uint8_t bufferSize; uint8_t* messageSize)
 {
 	uint8_t i = 0;
@@ -60,8 +75,8 @@ void AddFieldToBuffer(uint8_t* field, uint8_t fieldSize)//, uint8_t* buffer, uin
 }
 
 /**
-  * @brief  Main program
-  * @param  None
+  * @brief  Build the protocol pack and Send over serial
+  * @param  CanRxMsg Rx Can Packet to send over serial
   * @retval None
   */
  void SendMessage(CanRxMsgTypeDef* CanRxMsg)

@@ -1,22 +1,28 @@
-/*
- * Queues.c
- *
- *  Created on: 24 de mai de 2016
- *      Author: andre
- */
+/**
+  ******************************************************************************
+  * @file   queue.c
+  * @author André Dantas
+  * @brief	Implementation of queue data type using Abstract Data Type pattern
+  *
+ ******************************************************************************/
+/* Includes ------------------------------------------------------------------*/
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "main.h"
 #include "queue.h"
 
+/* Private define ------------------------------------------------------------*/
+/* Private typedef -----------------------------------------------------------*/
 typedef struct cell_def *Cell;
+/* Cell definition*/
 struct cell_def
 {
 	void *value;
 	Cell next;
 };
 
-
+/* Queue definition*/
 struct queue_def
 {
 	Cell front;
@@ -25,6 +31,16 @@ struct queue_def
 	uint8_t maxSize;
 };
 
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+/* Private function prototypes -----------------------------------------------*/
+/* Private functions ---------------------------------------------------------*/
+
+/**
+* @brief  Creates a Queue
+* @param[in] 	maxSize 	the max size of the queue
+* @retval 		Queue		pointer to the queue structure
+*/
 Queue CreateQueue(uint8_t maxSize)
 {
 	Queue q = malloc(sizeof(struct queue_def));
@@ -33,23 +49,49 @@ Queue CreateQueue(uint8_t maxSize)
 	q->front->next = NULL;
 	q->size = 0;
 	q->maxSize = maxSize;
+
+	return q;
 }
+
+/**
+* @brief  Test if the queue is empty
+* @param[in] 	q	Queue to be tested
+* @retval 		1 if queue is empty or 0 if the queue isn't empty
+*/
 uint8_t isEmpty(Queue q)
 {
 	return (q->size == 0);
 }
 
+/**
+* @brief  Test if the queue is full
+* @param[in] 	q	Queue to be tested
+* @retval 		1 if queue is full or 0 if the queue isn't full
+*/
 uint8_t isFull(Queue q)
 {
 	return (q->size == q->maxSize);
 }
 
+/**
+* @brief  Get Queue size
+* @param[in] 	q	Queue to be tested
+* @retval 		size of the queue
+*/
 uint8_t getQueueSize(Queue q)
 {
 	return q->size;
 }
 
-int8_t enQueue(Queue q, void *value, uint8_t size )
+/**
+* @brief  add an element in the queue q
+* @param[in] 	q			Queue
+* @param[in] 	element		element to add in the queue
+* @param[in] 	size		size of the element
+* @retval 		0 element was added to the queue
+* @retval 		-1 error
+*/
+int8_t enQueue(Queue q, void *element, uint8_t size )
 {
 	if( q->size == q->maxSize )
 	{
@@ -60,12 +102,21 @@ int8_t enQueue(Queue q, void *value, uint8_t size )
 	q->end->next->value = malloc(size);
 
 	q->end = q->end->next;
-	memcpy(q->end->value, value, size);
+	memcpy(q->end->value, element, size);
 	q->end->next = NULL;
 	q->size = q->size + 1;
+
+	return 0;
 }
 
-int8_t deQueue(Queue q, void **value)
+/**
+* @brief  gets an element in the queue q
+* @param[in] 	q			Queue
+* @param[in] 	element		pointer to the element
+* @retval 		0 element was retrivied from the queue
+* @retval 		-1 error
+*/
+int8_t deQueue(Queue q, void **element)
 {
 	if(isEmpty(q))
 	{
@@ -79,9 +130,9 @@ int8_t deQueue(Queue q, void **value)
 		q->front->next = d->next;
 		if(d != NULL)
 		{
-			if( value != NULL )
+			if( element != NULL )
 			{
-				*value = d->value;
+				*element = d->value;
 			}
 			free(d);
 		}
@@ -97,6 +148,10 @@ int8_t deQueue(Queue q, void **value)
 	}
 }
 
+/**
+* @brief  Destroy the queue q
+* @retval 	none
+*/
 void destroy(Queue q)
 {
 	if( q  != NULL )

@@ -38,6 +38,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "stm32f0xx_hal.h"
 #include "stm32f0xx_nucleo_32.h"
 #include "main.h"
@@ -56,9 +57,7 @@ UART_HandleTypeDef huart2;
 #define TX_BUFFER_SIZE 100
 /* Private variables ---------------------------------------------------------*/
 /* Welcome Message */
-int8_t WelcomeMessage[] = "Trixlog CanReader Application\n";
-/* TX Buffer */
-int8_t TxBuffer[TX_BUFFER_SIZE];
+uint8_t WelcomeMessage[] = "Trixlog CanReader Application\n";
 /* CAN Messages */
 CanTxMsgTypeDef	CAN_TxMessage;
 CanRxMsgTypeDef CAN_RxMessage;
@@ -110,7 +109,7 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
   AppInit();
-  HAL_UART_Transmit(&huart2, (uint8_t*)WelcomeMessage, strlen(WelcomeMessage), 5000);
+  HAL_UART_Transmit(&huart2,WelcomeMessage, sizeof(WelcomeMessage), 5000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -123,6 +122,7 @@ int main(void)
 		  AppStateMachineHandler(hcan.pRxMsg);
 	  }
 	  BSP_LED_Toggle(LED3);
+	  HAL_Delay(100);
   /* USER CODE BEGIN 3 */
 
   }

@@ -1,8 +1,9 @@
 /**
   ******************************************************************************
-  * @file    main.c
-  * @author  André Dantas
-  * @brief
+  * @file   app.c
+  * @author André Dantas
+  * @brief	Application machine state. For more information about it,
+  * read ../../docs/especificacao
   ******************************************************************************
 */
 
@@ -14,8 +15,6 @@
 #include "app.h"
 #include "queue.h"
 #include "protocol.h"
-
-
 
 /* Private typedef -----------------------------------------------------------*/
 typedef enum {

@@ -54,7 +54,6 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 /* Private definitions -------------------------------------------------------*/
-#define TX_BUFFER_SIZE 100
 /* Private variables ---------------------------------------------------------*/
 /* Welcome Message */
 uint8_t WelcomeMessage[] = "Trixlog CanReader Application\n";

@@ -4073,7 +4073,7 @@ OUTPUT(canreader.elf elf32-littlearm)
  .debug_ranges  0x00000580       0x80 Utilities/STM32F0xx_Nucleo_32/stm32f0xx_nucleo_32.o
  .debug_ranges  0x00000600       0x20 startup/startup_stm32f042x6.o
 
-.debug_macro    0x00000000    0x15ab8
+.debug_macro    0x00000000    0x15ab2
  .debug_macro   0x00000000      0x2be Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal.o
  .debug_macro   0x000002be      0x838 Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal.o
  .debug_macro   0x00000af6       0x4c Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal.o
@@ -4142,18 +4142,18 @@ OUTPUT(canreader.elf elf32-littlearm)
  .debug_macro   0x000145ce       0x22 Src/app.o
  .debug_macro   0x000145f0       0x16 Src/app.o
  .debug_macro   0x00014606       0x10 Src/app.o
- .debug_macro   0x00014616      0x2f3 Src/main.o
- .debug_macro   0x00014909       0x91 Src/main.o
- .debug_macro   0x0001499a      0x2c5 Src/protocol.o
- .debug_macro   0x00014c5f      0x178 Src/queue.o
- .debug_macro   0x00014dd7      0x10e Src/queue.o
- .debug_macro   0x00014ee5       0x8d Src/queue.o
- .debug_macro   0x00014f72       0x1c Src/queue.o
- .debug_macro   0x00014f8e      0x29a Src/stm32f0xx_hal_msp.o
- .debug_macro   0x00015228      0x2a4 Src/stm32f0xx_it.o
- .debug_macro   0x000154cc      0x29a Src/system_stm32f0xx.o
- .debug_macro   0x00015766      0x2c7 Utilities/STM32F0xx_Nucleo_32/stm32f0xx_nucleo_32.o
- .debug_macro   0x00015a2d       0x8b Utilities/STM32F0xx_Nucleo_32/stm32f0xx_nucleo_32.o
+ .debug_macro   0x00014616      0x2ed Src/main.o
+ .debug_macro   0x00014903       0x91 Src/main.o
+ .debug_macro   0x00014994      0x2c5 Src/protocol.o
+ .debug_macro   0x00014c59      0x178 Src/queue.o
+ .debug_macro   0x00014dd1      0x10e Src/queue.o
+ .debug_macro   0x00014edf       0x8d Src/queue.o
+ .debug_macro   0x00014f6c       0x1c Src/queue.o
+ .debug_macro   0x00014f88      0x29a Src/stm32f0xx_hal_msp.o
+ .debug_macro   0x00015222      0x2a4 Src/stm32f0xx_it.o
+ .debug_macro   0x000154c6      0x29a Src/system_stm32f0xx.o
+ .debug_macro   0x00015760      0x2c7 Utilities/STM32F0xx_Nucleo_32/stm32f0xx_nucleo_32.o
+ .debug_macro   0x00015a27       0x8b Utilities/STM32F0xx_Nucleo_32/stm32f0xx_nucleo_32.o
 
 .debug_line     0x00000000     0x7820
  .debug_line    0x00000000      0x85b Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal.o
@@ -4172,7 +4172,7 @@ OUTPUT(canreader.elf elf32-littlearm)
  .debug_line    0x00006f45      0x846 Utilities/STM32F0xx_Nucleo_32/stm32f0xx_nucleo_32.o
  .debug_line    0x0000778b       0x95 startup/startup_stm32f042x6.o
 
-.debug_str      0x00000000    0x6fdc3
+.debug_str      0x00000000    0x6fdb0
  .debug_str     0x00000000    0x6d683 Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal.o
                               0x6d8f2 (size before relaxing)
  .debug_str     0x0006d683      0x56d Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_can.o
@@ -4187,19 +4187,19 @@ OUTPUT(canreader.elf elf32-littlearm)
                               0x6df9a (size before relaxing)
  .debug_str     0x0006ee66      0x251 Src/app.o
                               0x6d5bb (size before relaxing)
- .debug_str     0x0006f0b7      0x441 Src/main.o
-                              0x6e24d (size before relaxing)
- .debug_str     0x0006f4f8       0xfc Src/protocol.o
+ .debug_str     0x0006f0b7      0x42e Src/main.o
+                              0x6e23a (size before relaxing)
+ .debug_str     0x0006f4e5       0xfc Src/protocol.o
                               0x6d917 (size before relaxing)
- .debug_str     0x0006f5f4       0x68 Src/queue.o
+ .debug_str     0x0006f5e1       0x68 Src/queue.o
                                0x5b65 (size before relaxing)
- .debug_str     0x0006f65c       0x2b Src/stm32f0xx_hal_msp.o
+ .debug_str     0x0006f649       0x2b Src/stm32f0xx_hal_msp.o
                               0x6dd53 (size before relaxing)
- .debug_str     0x0006f687       0x38 Src/stm32f0xx_it.o
+ .debug_str     0x0006f674       0x38 Src/stm32f0xx_it.o
                               0x6d367 (size before relaxing)
- .debug_str     0x0006f6bf       0x5a Src/system_stm32f0xx.o
+ .debug_str     0x0006f6ac       0x5a Src/system_stm32f0xx.o
                               0x6d40b (size before relaxing)
- .debug_str     0x0006f719      0x6aa Utilities/STM32F0xx_Nucleo_32/stm32f0xx_nucleo_32.o
+ .debug_str     0x0006f706      0x6aa Utilities/STM32F0xx_Nucleo_32/stm32f0xx_nucleo_32.o
                               0x6e0e4 (size before relaxing)
 
 .comment        0x00000000       0x6e
